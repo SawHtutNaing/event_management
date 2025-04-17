@@ -38,8 +38,8 @@ class Event extends Model
         return $this->hasMany(Booking::class);
     }
 
-    public function availableTickets()
+    public function availableSeat()
     {
-        return $this->capacity - $this->bookings()->sum('tickets');
+        return $this->capacity - 1;
     }
 }

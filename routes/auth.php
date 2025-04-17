@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use Illuminate\Http\Request;
+
 
 Route::middleware('guest')->group(function () {
     Volt::route('register', 'pages.auth.register')
@@ -28,4 +30,13 @@ Route::middleware('auth')->group(function () {
 
     Volt::route('confirm-password', 'pages.auth.confirm-password')
         ->name('password.confirm');
+
+Route::get('/logout' , function(Request $request){
+    Auth::logout(); // Logs out the user
+
+    $request->session()->invalidate(); // Invalidates the session
+
+    $request->session()->regenerateToken(); //
+    return redirect('/login'); // Redir
+})->name('logout');
 });

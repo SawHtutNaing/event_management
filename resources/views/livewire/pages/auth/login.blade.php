@@ -4,6 +4,7 @@ use App\Livewire\Forms\LoginForm;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use App\Models\User;
 
 new #[Layout('layouts.guest')] class extends Component
 {
@@ -20,7 +21,16 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('events.index', absolute: false), navigate: true);
+        $user  = User::find(auth()->id());
+        // if($user->isAdmin()){
+        //     $this->redirectIntended(default: route('admin.events.index', absolute: false), navigate: true);
+
+        // }else{
+        // $this->redirectIntended(default: route('events.index', absolute: false), navigate: true);
+
+        // }
+                $this->redirectIntended(default: route('home', absolute: false), navigate: true);
+
     }
 }; ?>
 
@@ -56,12 +66,18 @@ new #[Layout('layouts.guest')] class extends Component
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center justify-between mt-4">
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}" wire:navigate>
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
+
+            @if (Route::has('register'))
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('register') }}" wire:navigate>
+                {{ __('Register') }}
+            </a>
+        @endif
 
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}

@@ -11,31 +11,31 @@ class BookingForm extends Component
     public $tickets = 1;
     public $totalPrice;
     public $bookingSuccess = false;
-
+    public $is_still_available ;
     public function mount(Event $event)
     {
         $this->event = $event;
-        $this->calculateTotal();
+        $this->is_still_available = $this->event->availableSeat() > 0 ;
+
+
+
+
     }
 
-    public function calculateTotal()
-    {
-        $this->totalPrice = $this->tickets * $this->event->price;
-    }
 
     public function bookEvent()
     {
-        $this->validate([
-            'tickets' => ['required', 'integer', 'min:1', 'max:' . $this->event->availableTickets()]
-        ]);
+
 
         Booking::create([
             'user_id' => auth()->id(),
             'event_id' => $this->event->id,
-            'tickets' => $this->tickets,
-            'total_price' => $this->totalPrice,
-            'status' => 'confirmed'
+
         ]);
+
+        $this->event->capacity = $this->event->capacity  - 1 ;
+        $this->event->update();
+
 
         $this->bookingSuccess = true;
     }

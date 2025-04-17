@@ -46,7 +46,7 @@
                         <div class="mt-6 space-y-1">
                             @foreach($events as $event)
                                 @if($currentDay->between($event->start_date, $event->end_date))
-                                    <div wire:click="showEvent({{ $event->id }})" 
+                                    <div wire:click="showEvent({{ $event->id }})"
                                          class="text-xs p-1 rounded bg-blue-100 text-blue-800 cursor-pointer truncate">
                                         {{ $event->title }}
                                     </div>
@@ -82,7 +82,7 @@
                         <div class="space-y-1">
                             @foreach($events as $event)
                                 @if($currentDay->between($event->start_date, $event->end_date))
-                                    <div wire:click="showEvent({{ $event->id }})" 
+                                    <div wire:click="showEvent({{ $event->id }})"
                                          class="text-xs p-1 rounded bg-blue-100 text-blue-800 cursor-pointer truncate">
                                         {{ $event->title }}
                                     </div>
@@ -137,14 +137,16 @@
                     <p class="mb-2"><span class="font-semibold">Date:</span> {{ $selectedEvent->start_date->format('F j, Y') }}</p>
                     <p class="mb-2"><span class="font-semibold">Time:</span> {{ $selectedEvent->start_date->format('g:i A') }} - {{ $selectedEvent->end_date->format('g:i A') }}</p>
                     <p class="mb-2"><span class="font-semibold">Location:</span> {{ $selectedEvent->location }}</p>
-                    <p class="mb-2"><span class="font-semibold">Price:</span> ${{ number_format($selectedEvent->price, 2) }}</p>
-                    <p class="mb-4"><span class="font-semibold">Available Tickets:</span> {{ $selectedEvent->availableTickets() }}</p>
+
+                    <p class="mb-4"><span class="font-semibold">Available Seat</span> {{ $selectedEvent->availableSeat() }}</p>
                     <p>{{ $selectedEvent->description }}</p>
                 </div>
                 <div class="p-4 border-t flex justify-end space-x-2">
                     <button wire:click="$set('showEventModal', false)" class="px-4 py-2 bg-gray-200 rounded">Close</button>
                     @auth
-                        <a href="{{ route('events.show', $selectedEvent->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded">Book Now</a>
+                    @cannot('admin')
+                        <a href="{{ route('booking-form', $selectedEvent->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded">Book Now</a>
+                        @endcan
                     @else
                         <a href="{{ route('login') }}" class="px-4 py-2 bg-blue-500 text-white rounded">Login to Book</a>
                     @endauth
