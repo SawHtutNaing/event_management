@@ -2,16 +2,22 @@
 
 use App\Livewire\Admin\AdminRegistration;
 use App\Livewire\Admin\Bookings as AdminBookings;
+use App\Livewire\Admin\ClubManagement;
+use App\Livewire\Admin\ClubMembers;
 use App\Livewire\Admin\EventForm;
 use App\Livewire\Admin\Events as AdminEvents;
 
 use App\Livewire\BookingForm;
 use App\Livewire\Calendar;
+use App\Livewire\Club\AnnouncementManager;
+use App\Livewire\Club\ClubDashboard;
+use App\Livewire\ClubList;
 use App\Livewire\EventDetails;
 use App\Livewire\EventList;
 use App\Livewire\EventShow;
 use App\Livewire\Home;
 use App\Livewire\UserBookingIndex;
+use App\Livewire\UserClubs;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
@@ -21,6 +27,17 @@ Route::get('/', Home::class)->name('home');
 Route::get('/events', EventList::class)->name('events.index');
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/clubs-all', ClubList::class)->name('clubs.index');
+Route::get('/my-clubs',UserClubs::class)->name('clubs.my-clubs');
+
+Route::get('club/{clubId}/show', ClubDashboard::class)->name('clubs.show');
+Route::get('/{club}/announcements', AnnouncementManager::class)->name('club.announcements');
+
+
+
+
+
     // User routes
     Route::get('/events/{event}', EventShow::class)->name('events.show');
     Route::get('/calendar', Calendar::class)->name('calendar');
@@ -65,6 +82,10 @@ Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+
+
+        Route::get('/clubs', ClubManagement::class)->name('clubs.index');
+        Route::get('/clubs/{clubId}/members', ClubMembers::class)->name('clubs.members');
         Route::get('/', AdminEvents::class)->name('events.index');
         Route::get('/events/create', EventForm::class)->name('events.create');
         Route::get('/events/{event}/edit', EventForm::class)->name('events.edit');

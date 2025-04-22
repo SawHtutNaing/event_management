@@ -41,4 +41,19 @@ class User extends Authenticatable
     {
         return $this->hasRole('admin');
     }
+
+    public function clubs()
+{
+    return $this->belongsToMany(Club::class)
+        ->withPivot('role')
+        ->withTimestamps();
+}
+
+public function foundedClubs()
+{
+    return $this->hasMany(Club::class, 'founder_id');
+}
+
+
+
 }

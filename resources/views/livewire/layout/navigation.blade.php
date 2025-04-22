@@ -64,7 +64,35 @@ new class extends Component
                   <x-nav-link :href="route('bookings')" :active="request()->routeIs('user_bookings') || request()->routeIs('admin.bookings.index') " wire:navigate>
                     {{ __('Bookings') }}
                 </x-nav-link>
+
+
                   @endauth
+
+
+                  @auth
+                 @can('admin')
+                 <x-nav-link :href="route('admin.clubs.index')" :active="request()->routeIs('admin.clubs.index') " wire:navigate>
+                    {{ __('Club Management') }}
+                </x-nav-link>
+                 @endcan
+
+
+                  @endauth
+
+
+
+                  <x-nav-link :href="route('clubs.index')" :active="request()->routeIs('clubs.index')  " wire:navigate>
+                    {{ __('Clubs') }}
+                </x-nav-link>
+
+
+                @cannot('admin')
+
+                  <x-nav-link :href="route('clubs.my-clubs')" :active="request()->routeIs('clubs.my-clubs')  " wire:navigate>
+                    {{ __('My Clubs') }}
+                </x-nav-link>
+
+                @endcannot
 
 
 

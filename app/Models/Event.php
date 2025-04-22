@@ -42,4 +42,16 @@ class Event extends Model
     {
         return $this->capacity - 1;
     }
+
+    public function club()
+{
+    return $this->belongsTo(Club::class);
+}
+
+public function scopeClubEvents($query, $clubId)
+{
+    return $query->where('club_id', $clubId);
+}
+
+
 }
