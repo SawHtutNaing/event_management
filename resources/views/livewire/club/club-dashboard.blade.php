@@ -1,9 +1,9 @@
 <div class="container mx-auto p-4">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold">{{ $club->name }}</h1>
-        @if($isAdmin)
+        {{-- @if($isAdmin)
             <a href="{{ route('club.announcements', $club->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded">Manage Announcements</a>
-        @endif
+        @endif --}}
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

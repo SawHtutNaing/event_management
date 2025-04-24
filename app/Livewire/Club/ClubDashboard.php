@@ -11,6 +11,7 @@ class ClubDashboard extends Component
 
     public function mount($clubId)
     {
+
         $this->club = Club::with(['pinnedAnnouncements', 'announcements'])->findOrFail($clubId);
     }
 
