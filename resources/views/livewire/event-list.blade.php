@@ -23,14 +23,25 @@
                     <p class="text-gray-600 mb-2">
                         {{ $event->start_date->format('F j, Y g:i A') }} -
                         <br>
-                        {{ $event->end_date->format('F j, Y g:i A') }} 
+                        {{ $event->end_date->format('F j, Y g:i A') }}
 
                     </p>
                     <p class="text-gray-600 mb-2">{{ $event->location }}</p>
                     <p class="text-gray-700 mb-4">{{ Str::limit($event->description, 100) }}</p>
-                    <div class="flex justify-between items-center">
-                        <a href="{{ route('events.show', $event->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded">View Details</a>
-                    </div>
+                   @can('admin')
+                   <div class="flex justify-between items-center">
+                    <a href="{{ route('events.show', $event->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded">View Details</a>
+                </div>
+                   @endcan
+
+
+                   @cannot('admin')
+                   <div class="flex justify-between items-center">
+                    <a href="{{ route('booking-form', $event->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded">Booking</a>
+                </div>
+                   @endcan
+
+
                 </div>
             </div>
         @endforeach
