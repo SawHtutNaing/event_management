@@ -22,13 +22,17 @@ class Calendar extends Component
 
     public function loadEvents()
     {
-        $startOfMonth = $this->currentDate->copy()->startOfMonth();
-        $endOfMonth = $this->currentDate->copy()->endOfMonth();
+        $startOfMonth = $this->currentDate->copy()->startOfMonth()->startOfDay();
+        $endOfMonth = $this->currentDate->copy()->endOfMonth()->endOfDay();
 
-        $this->events = Event::whereBetween('start_date', [$startOfMonth, $endOfMonth])
-            ->orWhereBetween('end_date', [$startOfMonth, $endOfMonth])
-            ->get();
-
+        $this->events = Event::where(function ($query) use ($startOfMonth, $endOfMonth) {
+            $query->whereBetween('start_date', [$startOfMonth, $endOfMonth])
+                  ->orWhereBetween('end_date', [$startOfMonth, $endOfMonth])
+                  ->orWhere(function ($q) use ($startOfMonth, $endOfMonth) {
+                      $q->where('start_date', '<=', $startOfMonth)
+                        ->where('end_date', '>=', $endOfMonth);
+                  });
+        })->get();
     }
 
     public function previousPeriod()
