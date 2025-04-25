@@ -9,6 +9,7 @@ class EventShow extends Component
 {
 
 
+
     public $event;
     public $title;
     public $description;

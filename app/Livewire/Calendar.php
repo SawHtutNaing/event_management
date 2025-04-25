@@ -28,6 +28,7 @@ class Calendar extends Component
         $this->events = Event::whereBetween('start_date', [$startOfMonth, $endOfMonth])
             ->orWhereBetween('end_date', [$startOfMonth, $endOfMonth])
             ->get();
+
     }
 
     public function previousPeriod()

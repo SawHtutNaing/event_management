@@ -3,8 +3,8 @@
         <h1 class="text-2xl font-bold">Event Calendar</h1>
         <div class="flex space-x-2">
             <button wire:click="goToToday" class="px-4 py-2 bg-gray-200 rounded">Today</button>
-            <button wire:click="previousPeriod" class="px-4 py-2 bg-gray-200 rounded">&lt;</button>
-            <button wire:click="nextPeriod" class="px-4 py-2 bg-gray-200 rounded">&gt;</button>
+            <button wire:click="previousPeriod" class="px-4 py-2 bg-gray-200 rounded"><</button>
+            <button wire:click="nextPeriod" class="px-4 py-2 bg-gray-200 rounded">></button>
             <span class="px-4 py-2 font-semibold">
                 @if($view === 'month')
                     {{ $currentDate->format('F Y') }}
@@ -45,7 +45,15 @@
                         </div>
                         <div class="mt-6 space-y-1">
                             @foreach($events as $event)
-                                @if($currentDay->between($event->start_date, $event->end_date))
+                                @php
+                                    $eventStart = Carbon\Carbon::parse($event->start_date)->startOfDay();
+                                    $eventEnd = Carbon\Carbon::parse($event->end_date)->endOfDay();
+                                    $isSameDay = $eventStart->isSameDay($eventEnd);
+                                    $isEventOnDay = $isSameDay
+                                        ? $currentDay->isSameDay($eventStart)
+                                        : $currentDay->between($eventStart, $eventEnd) || $currentDay->isSameDay($eventStart) || $currentDay->isSameDay($eventEnd);
+                                @endphp
+                                @if($isEventOnDay)
                                     <div wire:click="showEvent({{ $event->id }})"
                                          class="text-xs p-1 rounded bg-blue-100 text-blue-800 cursor-pointer truncate">
                                         {{ $event->title }}
@@ -81,7 +89,15 @@
                     <div class="bg-white p-1">
                         <div class="space-y-1">
                             @foreach($events as $event)
-                                @if($currentDay->between($event->start_date, $event->end_date))
+                                @php
+                                    $eventStart = Carbon\Carbon::parse($event->start_date)->startOfDay();
+                                    $eventEnd = Carbon\Carbon::parse($event->end_date)->endOfDay();
+                                    $isSameDay = $eventStart->isSameDay($eventEnd);
+                                    $isEventOnDay = $isSameDay
+                                        ? $currentDay->isSameDay($eventStart)
+                                        : $currentDay->between($eventStart, $eventEnd) || $currentDay->isSameDay($eventStart) || $currentDay->isSameDay($eventEnd);
+                                @endphp
+                                @if($isEventOnDay)
                                     <div wire:click="showEvent({{ $event->id }})"
                                          class="text-xs p-1 rounded bg-blue-100 text-blue-800 cursor-pointer truncate">
                                         {{ $event->title }}
@@ -102,7 +118,12 @@
             <div class="divide-y">
                 @php
                     $dayEvents = $events->filter(function($event) {
-                        return $this->currentDate->between($event->start_date, $event->end_date);
+                        $eventStart = Carbon\Carbon::parse($event->start_date)->startOfDay();
+                        $eventEnd = Carbon\Carbon::parse($event->end_date)->endOfDay();
+                        $isSameDay = $eventStart->isSameDay($eventEnd);
+                        return $isSameDay
+                            ? $this->currentDate->isSameDay($eventStart)
+                            : $this->currentDate->between($eventStart, $eventEnd) || $this->currentDate->isSameDay($eventStart) || $this->currentDate->isSameDay($eventEnd);
                     });
                 @endphp
 
@@ -130,14 +151,13 @@
                 <div class="p-4 border-b">
                     <h2 class="text-xl font-semibold">{{ $selectedEvent->title }}</h2>
                     <button wire:click="$set('showEventModal', false)" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-                        &times;
+                        ×
                     </button>
                 </div>
                 <div class="p-4">
                     <p class="mb-2"><span class="font-semibold">Date:</span> {{ $selectedEvent->start_date->format('F j, Y') }}</p>
                     <p class="mb-2"><span class="font-semibold">Time:</span> {{ $selectedEvent->start_date->format('g:i A') }} - {{ $selectedEvent->end_date->format('g:i A') }}</p>
                     <p class="mb-2"><span class="font-semibold">Location:</span> {{ $selectedEvent->location }}</p>
-
                     <p class="mb-4"><span class="font-semibold">Available Seat</span> {{ $selectedEvent->availableSeat() }}</p>
                     <p>{{ $selectedEvent->description }}</p>
                 </div>
@@ -146,7 +166,7 @@
                     @auth
                     @cannot('admin')
                         <a href="{{ route('booking-form', $selectedEvent->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded">Book Now</a>
-                        @endcan
+                    @endcan
                     @else
                         <a href="{{ route('login') }}" class="px-4 py-2 bg-blue-500 text-white rounded">Login to Book</a>
                     @endauth
