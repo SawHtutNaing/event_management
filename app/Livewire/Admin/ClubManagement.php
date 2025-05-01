@@ -40,6 +40,7 @@ class ClubManagement extends Component
         $this->clubId = $club->id;
         $this->name = $club->name;
         $this->description = $club->description;
+
         $this->isActive = $club->is_active;
         $this->existingImage = $club->image;
         $this->showForm = true;

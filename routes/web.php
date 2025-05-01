@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/my-clubs',UserClubs::class)->name('clubs.my-clubs');
 
 Route::get('club/{clubId}/show', ClubDashboard::class)->name('clubs.show');
-Route::get('/{club}/announcements', AnnouncementManager::class)->name('club.announcements');
+Route::get('/{clubId}/announcements', AnnouncementManager::class)->name('club.announcements');
 
 
 

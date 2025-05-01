@@ -27,7 +27,7 @@ new #[Layout('layouts.guest')] class extends Component
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
-
+        $user->roles()->attach(2);
         event(new Registered($user = User::create($validated)));
 
         Auth::login($user);

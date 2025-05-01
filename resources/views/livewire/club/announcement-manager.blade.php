@@ -1,7 +1,10 @@
 <div class="container mx-auto p-4">
     <div class="flex justify-between items-center mb-4">
+
         <h1 class="text-2xl font-bold">Announcements for {{ $club->name }}</h1>
+        @if($isAdmin)
         <button wire:click="create" class="px-4 py-2 bg-blue-500 text-white rounded">New Announcement</button>
+        @endif
     </div>
 
     @if(session('message'))
@@ -29,7 +32,7 @@
                     </div>
 
                     <div class="flex items-center">
-                        <input type="checkbox" wire:model="isPinned" id="isPinned" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <input type="checkbox" wire:model="isPinned" @checked($isPinned) id="isPinned" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                         <label for="isPinned" class="ml-2 block text-sm text-gray-700">Pin this announcement</label>
                     </div>
                 </div>
