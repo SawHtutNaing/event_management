@@ -6,7 +6,7 @@ use App\Livewire\Admin\ClubManagement;
 use App\Livewire\Admin\ClubMembers;
 use App\Livewire\Admin\EventForm;
 use App\Livewire\Admin\Events as AdminEvents;
-
+use App\Livewire\BatchManagement;
 use App\Livewire\BookingForm;
 use App\Livewire\Calendar;
 use App\Livewire\Club\AnnouncementManager;
@@ -14,8 +14,10 @@ use App\Livewire\Club\ClubDashboard;
 use App\Livewire\ClubList;
 use App\Livewire\EventDetails;
 use App\Livewire\EventList;
+use App\Livewire\EventManagementAttach;
 use App\Livewire\EventShow;
 use App\Livewire\Home;
+use App\Livewire\StudentManagement;
 use App\Livewire\UserBookingIndex;
 use App\Livewire\UserClubs;
 use App\Models\User;
@@ -92,6 +94,11 @@ Route::middleware(['auth', 'admin'])
         Route::get('/events/{event}', EventDetails::class)->name('events.details');
 
         Route::get('/bookings', AdminBookings::class)->name('bookings.index');
+
+        Route::get('/student-management' , StudentManagement::class)->name('student_management');
+
+        Route::get('/attch-batch-event' , EventManagementAttach::class)->name('attach_batch_event');
+        Route::get('/batch-management' , BatchManagement::class)->name('batch_management');
 
     });
 Route::get('/profile', fn() => view('profile'))->name('profile');

@@ -53,5 +53,10 @@ public function scopeClubEvents($query, $clubId)
     return $query->where('club_id', $clubId);
 }
 
+public function batches()
+{
+    return $this->belongsToMany(Batch::class);
+}
+
 
 }

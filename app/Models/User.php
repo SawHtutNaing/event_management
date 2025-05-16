@@ -54,6 +54,12 @@ public function foundedClubs()
     return $this->hasMany(Club::class, 'founder_id');
 }
 
+public function batches()
+{
+    return $this->belongsToMany(Batch::class);
+}
+
+
 
 
 }

@@ -16,24 +16,27 @@ class EventList extends Component
     {
         $start = $this->startDate;
         $end = $this->endDate;
+        $user = auth()->user();
 
-        $events = Event::query()
-            ->when($this->search, function ($q) {
-                $q->where('title', 'like', '%' . $this->search . '%');
-            })
-            ->when($start && $end, function ($q) use ($start, $end) {
-                $q->where(function ($query) use ($start, $end) {
-                    $query->where('start_date', '<=', $end)
-                          ->where('end_date', '>=', $start);
-                });
-            })
-            ->when($start && !$end, function ($q) use ($start) {
-                $q->where('end_date', '>=', $start);
-            })
-            ->when(!$start && $end, function ($q) use ($end) {
-                $q->where('start_date', '<=', $end);
-            })
-            ->paginate(10);
+        $events = Event::whereHas('batches', function ($query) use ($user) {
+            $query->whereIn('batches.id', $user->batches->pluck('id'));
+        })
+        ->when($this->search, function ($q) {
+            $q->where('title', 'like', '%' . $this->search . '%');
+        })
+        ->when($start && $end, function ($q) use ($start, $end) {
+            $q->where(function ($query) use ($start, $end) {
+                $query->where('start_date', '<=', $end)
+                      ->where('end_date', '>=', $start);
+            });
+        })
+        ->when($start && !$end, function ($q) use ($start) {
+            $q->where('end_date', '>=', $start);
+        })
+        ->when(!$start && $end, function ($q) use ($end) {
+            $q->where('start_date', '<=', $end);
+        })
+        ->paginate(10);
 
         return view('livewire.event-list', compact('events'));
     }

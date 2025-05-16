@@ -98,6 +98,40 @@ new class extends Component
               @endcannot
                 @endauth
 
+                @auth
+                @can('admin')
+
+                <x-nav-link :href="route('admin.student_management')" :active="request()->routeIs('admin.student_management')  " wire:navigate>
+                  {{ __('Student Management') }}
+              </x-nav-link>
+
+              @endcan
+                @endauth
+
+                @auth
+                @can('admin')
+
+                <x-nav-link :href="route('admin.attach_batch_event')" :active="request()->routeIs('admin.attach_batch_event')  " wire:navigate>
+                  {{ __('Attach Batch Event') }}
+              </x-nav-link>
+
+              @endcan
+                @endauth
+
+
+                @auth
+                @can('admin')
+
+                <x-nav-link :href="route('admin.batch_management')" :active="request()->routeIs('admin.batch_management')  " wire:navigate>
+                  {{ __(' Batch Management ') }}
+              </x-nav-link>
+
+              @endcan
+                @endauth
+
+
+
+
 
 
                 </div>
