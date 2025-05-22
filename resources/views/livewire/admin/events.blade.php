@@ -73,6 +73,8 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+
+                            <a href="{{ route('admin.events.students', $event->id) }}" class="text-blue-600 hover:text-blue-900 mr-3">Student</a>
                             <a href="{{ route('admin.events.edit', $event->id) }}" class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
                             @if(!$event->is_approved)
                                 <button wire:click="approveEvent({{ $event->id }})" class="text-green-600 hover:text-green-900 mr-3">Approve</button>

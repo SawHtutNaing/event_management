@@ -16,6 +16,7 @@ use App\Livewire\EventDetails;
 use App\Livewire\EventList;
 use App\Livewire\EventManagementAttach;
 use App\Livewire\EventShow;
+use App\Livewire\EventStudent;
 use App\Livewire\Home;
 use App\Livewire\StudentManagement;
 use App\Livewire\UserBookingIndex;
@@ -91,6 +92,7 @@ Route::middleware(['auth', 'admin'])
         Route::get('/', AdminEvents::class)->name('events.index');
         Route::get('/events/create', EventForm::class)->name('events.create');
         Route::get('/events/{event}/edit', EventForm::class)->name('events.edit');
+        Route::get('/events/{event}/students', EventStudent::class)->name('events.students');
         Route::get('/events/{event}', EventDetails::class)->name('events.details');
 
         Route::get('/bookings', AdminBookings::class)->name('bookings.index');

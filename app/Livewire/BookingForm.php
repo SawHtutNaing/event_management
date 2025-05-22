@@ -33,6 +33,9 @@ class BookingForm extends Component
 
         ]);
 
+        $this->event->students()->sync(auth()->id());
+
+
         $this->event->capacity = $this->event->capacity  - 1 ;
         $this->event->update();
 

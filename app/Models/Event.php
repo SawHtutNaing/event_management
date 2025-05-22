@@ -58,5 +58,10 @@ public function batches()
     return $this->belongsToMany(Batch::class);
 }
 
+public function students()
+{
+    return $this->belongsToMany(User::class, 'event_students');
 
+
+}
 }

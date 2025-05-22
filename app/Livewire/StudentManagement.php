@@ -9,7 +9,7 @@ class StudentManagement extends Component
 {
     public $students;
     public $batches;
-    public $selectedStudent;
+    public $selectedStudentIds = [];
     public $selectedBatch;
 
     public function mount()
@@ -18,25 +18,30 @@ class StudentManagement extends Component
         $this->batches = Batch::all();
     }
 
-    public function selectStudent($id)
-    {
-        $this->selectedStudent = User::find($id);
-    }
-
     public function attachBatch()
     {
-        if ($this->selectedStudent && $this->selectedBatch) {
-            $this->selectedStudent->batches()->syncWithoutDetaching([$this->selectedBatch]);
-            $this->selectedStudent = $this->selectedStudent->fresh(); // Refresh relation
+        if (!empty($this->selectedStudentIds) && $this->selectedBatch) {
+            foreach ($this->selectedStudentIds as $studentId) {
+                $student = User::find($studentId);
+                if ($student) {
+                    $student->batches()->syncWithoutDetaching([$this->selectedBatch]);
+                }
+            }
+
+            // Refresh students list (optional)
+            $this->students = User::whereHas('roles', fn($q) => $q->where('role_id', 2))->get();
         }
     }
 
-    public function detachBatch($batchId)
+    public function detachBatch($studentId, $batchId)
     {
-        if ($this->selectedStudent) {
-            $this->selectedStudent->batches()->detach($batchId);
-            $this->selectedStudent = $this->selectedStudent->fresh();
+        $student = User::find($studentId);
+        if ($student) {
+            $student->batches()->detach($batchId);
         }
+
+        // Refresh students list (optional)
+        $this->students = User::whereHas('roles', fn($q) => $q->where('role_id', 2))->get();
     }
 
     public function render()
