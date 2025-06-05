@@ -1,7 +1,6 @@
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">{{ $event ? 'Edit Event' : 'Create Event' }}</h1>
 
-
     <form wire:submit.prevent="save" class="bg-white rounded-lg shadow p-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="col-span-2">
@@ -40,11 +39,15 @@
                 @error('capacity') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
-            {{-- <div>
-                <label for="price" class="block text-sm font-medium text-gray-700">Price ($)</label>
-                <input type="number" step="0.01" wire:model="price" id="price" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                @error('price') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div> --}}
+            <div class="col-span-2">
+                <label for="students" class="block text-sm font-medium text-gray-700">Select Students</label>
+                <select wire:model="selectedStudents" multiple id="students" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    @foreach($availableStudents as $student)
+                        <option value="{{ $student['id'] }}">{{ $student['name'] }}</option>
+                    @endforeach
+                </select>
+                @error('selectedStudents.*') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            </div>
 
             <div>
                 <label for="image" class="block text-sm font-medium text-gray-700">Event Image</label>

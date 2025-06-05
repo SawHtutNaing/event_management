@@ -36,9 +36,11 @@
 
 
                    @cannot('admin')
-                   <div class="flex justify-between items-center">
-                    <a href="{{ route('booking-form', $event->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded">Booking</a>
-                </div>
+              @if (!$event->bookings->where('user_id', auth()->id())->count())
+    <div class="flex justify-between items-center">
+        <a href="{{ route('booking-form', $event->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded">Booking</a>
+    </div>
+@endif
                    @endcan
 
 
