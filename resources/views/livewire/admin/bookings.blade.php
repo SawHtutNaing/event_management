@@ -24,6 +24,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
                             </tr>
@@ -35,6 +36,12 @@
                                         <div class="font-medium text-gray-900">{{ $booking->event->title }}</div>
                                         <div class="text-sm text-gray-500">{{ $booking->event->location }}</div>
                                     </td>
+
+                                       <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="font-medium text-gray-900">{{ $booking->user->name }}</div>
+
+                                    </td>
+
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $booking->event->start_date->format('M j, Y g:i A') }}
                                     </td>

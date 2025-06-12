@@ -40,13 +40,13 @@
             </div>
 
             <div class="col-span-2">
-                <label for="students" class="block text-sm font-medium text-gray-700">Select Students</label>
-                <select wire:model="selectedStudents" multiple id="students" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                    @foreach($availableStudents as $student)
-                        <option value="{{ $student['id'] }}">{{ $student['name'] }}</option>
+                <label for="batches" class="block text-sm font-medium text-gray-700">Select Batches</label>
+                <select wire:model="selectedBatches" multiple id="batches" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    @foreach($availableBatches as $batch)
+                        <option value="{{ $batch['id'] }}">{{ $batch['name'] }}</option>
                     @endforeach
                 </select>
-                @error('selectedStudents.*') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                @error('selectedBatches.*') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
             <div>

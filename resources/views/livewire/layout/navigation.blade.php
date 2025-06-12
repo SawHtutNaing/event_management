@@ -109,13 +109,13 @@ new class extends Component
                 @endauth
 
                 @auth
-                @can('admin')
+                {{-- @can('admin')
 
                 <x-nav-link :href="route('admin.attach_batch_event')" :active="request()->routeIs('admin.attach_batch_event')  " wire:navigate>
                   {{ __('Attach Batch Event') }}
               </x-nav-link>
 
-              @endcan
+              @endcan --}}
                 @endauth
 
 

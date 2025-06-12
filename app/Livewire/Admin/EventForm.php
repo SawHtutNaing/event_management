@@ -4,8 +4,7 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use App\Models\Event;
-use App\Models\User;
-use App\Models\Role;
+use App\Models\Batch;
 use Livewire\WithFileUploads;
 use Carbon\Carbon;
 
@@ -23,8 +22,8 @@ class EventForm extends Component
     public $image;
     public $is_approved = false;
     public $existingImage;
-    public $selectedStudents = [];
-    public $availableStudents = [];
+    public $selectedBatches = [];
+    public $availableBatches = [];
 
     protected $rules = [
         'title' => 'required|string|max:255',
@@ -35,17 +34,15 @@ class EventForm extends Component
         'capacity' => 'required|integer|min:1',
         'image' => 'nullable|image|max:2048',
         'is_approved' => 'boolean',
-        'selectedStudents' => 'array',
-        'selectedStudents.*' => 'exists:users,id'
+        'selectedBatches' => 'array',
+        'selectedBatches.*' => 'exists:batches,id'
     ];
 
     public function mount($event = null)
     {
-        // Load all users with the 'student' role
-        $this->availableStudents = User::whereHas('roles', function ($query) {
-            $query->where('name', 'user');
-        })->get()->map(function ($user) {
-            return ['id' => $user->id, 'name' => $user->name];
+        // Load all available batches
+        $this->availableBatches = Batch::all()->map(function ($batch) {
+            return ['id' => $batch->id, 'name' => $batch->name];
         })->toArray();
 
         if ($event) {
@@ -58,8 +55,8 @@ class EventForm extends Component
             $this->capacity = $this->event->capacity;
             $this->is_approved = $this->event->is_approved;
             $this->existingImage = $this->event->image;
-            // Load currently attached students
-            $this->selectedStudents = $this->event->students()->pluck('users.id')->toArray();
+            // Load currently attached batches
+            $this->selectedBatches = $this->event->batches()->pluck('batches.id')->toArray();
         }
     }
 
@@ -86,14 +83,14 @@ class EventForm extends Component
         if ($this->event) {
             // Update existing event
             $this->event->update($data);
-            // Sync students (attach/detach)
-            $this->event->students()->sync($this->selectedStudents);
+            // Sync batches (attach/detach)
+            $this->event->batches()->sync($this->selectedBatches);
             session()->flash('message', 'Event updated successfully.');
         } else {
             // Create new event
             $event = Event::create($data);
-            // Attach selected students
-            $event->students()->attach($this->selectedStudents);
+            // Attach selected batches
+            $event->batches()->attach($this->selectedBatches);
             session()->flash('message', 'Event created successfully.');
         }
 
